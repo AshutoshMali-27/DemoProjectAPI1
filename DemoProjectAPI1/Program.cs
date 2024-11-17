@@ -40,6 +40,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddSingleton<IloginInterface, LoginService>();
 builder.Services.AddSingleton<IMenuService, MenuService>();
+builder.Services.AddSingleton<ISanctionOrder, sanctionorderservice>();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
