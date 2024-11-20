@@ -10,5 +10,9 @@ namespace IRepositroy
     public interface ISanctionOrder
     {
         Task<List<FinancialYearViewModel>> GetFinancialYear ();
+        Task<List<SanctionOrderDetails>> Getsanctionorderdetails();
+        Task<List<Scheme>> GetSchemeNames();
+        Task<List<Scheme>> GetComponentNames(int schemeid);
+        Task<int> InsertSanctionOrderEntry(int financialYearId, int schemeId, int componentId, int utypeid, int ulbid, double SanctionAmount, double ExpenditureAmount, double BalanceAmount);
     }
 }
