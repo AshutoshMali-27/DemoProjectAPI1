@@ -1,4 +1,5 @@
 ﻿using IRepositroy;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Model.ViewModel;
 using System;
@@ -152,7 +153,7 @@ namespace Services
             return componentNames;
         }
 
-        public async Task<int> InsertSanctionOrderEntry(int financialYearId, int schemeId, int componentId,int utypeid,int ulbid,double SanctionAmount,double ExpenditureAmount,double BalanceAmount)
+        public async Task<int> InsertSanctionOrderEntry(int financialYearId, int schemeId, int componentId,int utypeid,int ulbid,double SanctionAmount,double ExpenditureAmount,double BalanceAmount,double amount,string Sanctionnumber, string sanctionfileupload)
         {
             using (var connection = new SqlConnection(dbconnection))
             {
@@ -171,7 +172,10 @@ namespace Services
                     command.Parameters.AddWithValue("@SanctionAmount", SanctionAmount);
                     command.Parameters.AddWithValue("@ExpenditureAmount", ExpenditureAmount);
                     command.Parameters.AddWithValue("@BalanceAmount", BalanceAmount);
-
+                    command.Parameters.AddWithValue("@amount", amount);
+                    command.Parameters.AddWithValue("@sanctionnumber", Sanctionnumber);
+                    command.Parameters.AddWithValue("@sanctionfileupload", sanctionfileupload);
+                    
                     // Execute the stored procedure and get the new ID
                     var result = await command.ExecuteScalarAsync();
                     return Convert.ToInt32(result);
@@ -179,6 +183,41 @@ namespace Services
             }
         }
 
-      
+        public async Task<List<ClsSanctionorderdetails>> GetSanctionOrderDetailinbox()
+        {
+
+            var sanctionorderdetailinbox = new List<ClsSanctionorderdetails>();
+
+            using (var connection = new SqlConnection(dbconnection))
+            {
+                await connection.OpenAsync();
+
+                using (var command = new SqlCommand("GetSantionOrderDetails", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var sanctiondetailinbox = new ClsSanctionorderdetails
+                            {
+                                id = Convert.ToInt32(reader["id"]),
+                                FinancialYear = Convert.ToString(reader["FinancialYear"]),
+                                Schemename = Convert.ToString(reader["Schemename"]),
+                                ComponentName = Convert.ToString(reader["ComponentName"]),
+                                amount = Convert.ToDouble(reader["amount"]),
+                                Sanctionnumber = Convert.ToString(reader["Sanctionnumber"]),
+                                ApprovalStatus=Convert.ToString(reader["ApprovalStatus"])
+                            };
+
+                            sanctionorderdetailinbox.Add(sanctiondetailinbox);
+                        }
+                    }
+                }
+            }
+
+            return sanctionorderdetailinbox;
+        }
     }
 }

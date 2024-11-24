@@ -18,5 +18,8 @@ namespace Model.ViewModel
         public double ExpenditureAmount { get; set; }
         public double SanctionAmount { get; set; }
         public double BalanceAmount { get; set; }
+        public double amount { get; set; }
+       public string Sanctionnumber { get; set; }
+        public string sanctionfileupload { get; set; }
     }
 }

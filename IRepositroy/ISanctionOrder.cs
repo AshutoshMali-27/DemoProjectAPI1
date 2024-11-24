@@ -13,6 +13,7 @@ namespace IRepositroy
         Task<List<SanctionOrderDetails>> Getsanctionorderdetails();
         Task<List<Scheme>> GetSchemeNames();
         Task<List<Scheme>> GetComponentNames(int schemeid);
-        Task<int> InsertSanctionOrderEntry(int financialYearId, int schemeId, int componentId, int utypeid, int ulbid, double SanctionAmount, double ExpenditureAmount, double BalanceAmount);
+        Task<List<ClsSanctionorderdetails>> GetSanctionOrderDetailinbox();
+        Task<int> InsertSanctionOrderEntry(int financialYearId, int schemeId, int componentId, int utypeid, int ulbid, double SanctionAmount, double ExpenditureAmount, double BalanceAmount,double amount,string Sanctionnumber, string sanctionfileupload);
     }
 }

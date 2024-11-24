@@ -100,13 +100,30 @@ namespace DemoProjectAPI1.Controllers
                 int newId = await _SanctionOrder.InsertSanctionOrderEntry(
                     model.FinancialYearId,
                     model.SchemeId,
-                    model.ComponentId, model.utypeid, model.ulbid,model.SanctionAmount,model.ExpenditureAmount,model.BalanceAmount);
+                    model.ComponentId, model.utypeid, model.ulbid,model.SanctionAmount,model.ExpenditureAmount,model.BalanceAmount,model.amount,model.Sanctionnumber, model.sanctionfileupload);
 
                 return Ok(new { Message = "Sanction order entry created successfully", NewId = newId });
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
+
+        [HttpGet("getsanctiondetailinbox")]
+        public async Task<ActionResult<List<ClsSanctionorderdetails>>> GetSanctionDetailInbox()
+        {
+            try
+            {
+                var SanctionDetails = await _SanctionOrder.GetSanctionOrderDetailinbox();
+                return Ok(SanctionDetails);
+            }
+            catch (System.Exception ex)
+            {
+                // Log the exception (consider using a logging framework)
+                return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
     }
